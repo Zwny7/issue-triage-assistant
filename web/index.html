@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Issue助手</title>
+  <link rel="stylesheet" href="/static/site.css?v=theme-2">
+  <script src="/static/site.js" defer></script>
+</head>
+<body>
+  <header class="top"><div class="frame bar">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true">&gt;_</span> Issue 助手</a>
+    <a class="api" href="/docs" target="_blank" rel="noopener">接口文档 ↗</a>
+  </div></header>
+  <main class="frame">
+    <section id="issues-panel">
+      <div class="intro"><div><h1>Issue 助手</h1><p>为反馈建议分类、查找相似记录，提示需要补充的复现信息。</p></div></div>
+      <div class="layout">
+        <form class="card" id="issue-form">
+          <div class="choices" id="examples" aria-label="示例反馈"></div>
+          <label for="title">问题标题</label><input id="title" minlength="2" maxlength="180" required placeholder="简要描述问题或建议">
+          <label for="body">问题详情</label><textarea id="body" rows="6" maxlength="3500" placeholder="可以补充版本、操作系统、复现步骤和预期结果"></textarea>
+          <div class="field"><label for="analysis-mode">分析方式</label><select id="analysis-mode"><option value="local">规则分析</option><option value="model">大模型工具调用</option></select></div>
+          <button type="submit">生成分诊建议</button>
+          <p id="issue-status" class="status" role="status"></p>
+        </form>
+        <div class="card" id="triage" aria-live="polite"><h2>分诊建议</h2><p class="muted">提交问题后可以预览建议，并在此确认或驳回。</p></div>
+      </div>
+      <div class="lower">
+        <div class="card">
+          <h2>最近分诊</h2>
+          <p id="history-status" class="status" role="status"></p>
+          <div id="history"></div>
+        </div>
+        <div class="card">
+          <h2>历史问题库</h2>
+          <p id="corpus-status" class="muted">正在读取历史问题…</p>
+          <form id="import-form">
+            <label for="import-file">导入历史问题 JSON</label>
+            <input id="import-file" type="file" accept=".json,application/json" required>
+            <div class="actions">
+              <button type="submit">导入问题</button>
+              <a href="/api/issues/import-example" download="issue-history-example.json">下载示例 JSON</a>
+            </div>
+            <p id="import-status" class="status" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
