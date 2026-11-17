@@ -3,6 +3,7 @@ const labels = { bug: "故障", feature: "功能建议", question: "使用咨询
 const states = { pending: "待确认", approved: "已确认", rejected: "已驳回" };
 let pendingRequest;
 let selectedRecord = 0;
+let recentRecords = [];
 
 function element(tag, text, className) {
   const node = document.createElement(tag);
@@ -31,10 +32,18 @@ function status(id, message, error = false) {
 
 
 async function loadHistory() {
-  const rows = await request("/api/issues");
+  recentRecords = await request("/api/issues");
+  renderHistory();
+}
+
+function renderHistory() {
+  const filter = byId("history-filter").value;
+  const rows = recentRecords.filter(record => filter === "all" || record.status === filter);
   const node = byId("history");
   node.replaceChildren();
-  if (!rows.length) node.append(element("p", "还没有分诊记录。", "muted"));
+  if (!rows.length) {
+    node.append(element("p", filter === "all" ? "还没有分诊记录。" : "最近的记录里没有这个状态。", "muted"));
+  }
   for (const record of rows) {
     const button = element("button", "", "secondary history-entry");
     button.type = "button";
@@ -55,6 +64,8 @@ async function loadHistory() {
     node.append(button);
   }
 }
+
+byId("history-filter").addEventListener("change", renderHistory);
 
 function renderIssue(record) {
   const node = byId("triage");

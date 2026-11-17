@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Issue助手</title>
-  <link rel="stylesheet" href="/static/site.css?v=theme-2">
-  <script src="/static/site.js" defer></script>
+  <title>Issue 助手</title>
+  <link rel="stylesheet" href="/static/site.css?v=4">
+  <script src="/static/site.js?v=4" defer></script>
 </head>
 <body>
   <header class="top"><div class="frame bar">
@@ -14,9 +14,10 @@
   </div></header>
   <main class="frame">
     <section id="issues-panel">
-      <div class="intro"><div><h1>Issue 助手</h1><p>为反馈建议分类、查找相似记录，提示需要补充的复现信息。</p></div></div>
+      <div class="intro"><div><h1>反馈分诊</h1><p>查看类似的旧反馈，补齐复现信息，再决定怎么处理。</p></div></div>
       <div class="layout">
         <form class="card" id="issue-form">
+          <h2>新反馈</h2>
           <div class="choices" id="examples" aria-label="示例反馈"></div>
           <label for="title">问题标题</label><input id="title" minlength="2" maxlength="180" required placeholder="简要描述问题或建议">
           <label for="body">问题详情</label><textarea id="body" rows="6" maxlength="3500" placeholder="可以补充版本、操作系统、复现步骤和预期结果"></textarea>
@@ -28,22 +29,33 @@
       </div>
       <div class="lower">
         <div class="card">
-          <h2>最近分诊</h2>
+          <div class="queue-heading">
+            <h2>最近分诊</h2>
+            <select id="history-filter" aria-label="筛选分诊状态">
+              <option value="all">全部状态</option>
+              <option value="pending">待确认</option>
+              <option value="approved">已确认</option>
+              <option value="rejected">已驳回</option>
+            </select>
+          </div>
           <p id="history-status" class="status" role="status"></p>
           <div id="history"></div>
         </div>
         <div class="card">
           <h2>历史问题库</h2>
           <p id="corpus-status" class="muted">正在读取历史问题…</p>
-          <form id="import-form">
-            <label for="import-file">导入历史问题 JSON</label>
-            <input id="import-file" type="file" accept=".json,application/json" required>
-            <div class="actions">
-              <button type="submit">导入问题</button>
-              <a href="/api/issues/import-example" download="issue-history-example.json">下载示例 JSON</a>
-            </div>
-            <p id="import-status" class="status" role="status"></p>
-          </form>
+          <details id="import-panel">
+            <summary>导入历史问题</summary>
+            <form id="import-form">
+              <label for="import-file">导入历史问题 JSON</label>
+              <input id="import-file" type="file" accept=".json,application/json" required>
+              <div class="actions">
+                <button type="submit">导入问题</button>
+                <a href="/api/issues/import-example" download="issue-history-example.json">下载示例 JSON</a>
+              </div>
+              <p id="import-status" class="status" role="status"></p>
+            </form>
+          </details>
         </div>
       </div>
     </section>
